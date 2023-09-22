@@ -1,6 +1,6 @@
 // LINK - https://www.pepcoding.com/resources/online-java-foundation/generic-tree/display-generic-tree/video
 
-// TC = O(n), SC = O(1)
+// TC = O(n), SC = O(n)
 #include <iostream>
 #include <vector>
 #include <stack>
