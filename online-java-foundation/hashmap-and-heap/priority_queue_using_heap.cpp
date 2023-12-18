@@ -1,6 +1,6 @@
 // LINK - https://www.pepcoding.com/resources/online-java-foundation/hashmap-and-heap/priority-queue-using-heap-official/ojquestion
 
-// TC = O(logn), SC = O(1)
+// TC = O(logn) Efficient = O(n), SC = O(1)
 #include <iostream>
 #include <algorithm>
 #include <vector>
@@ -72,6 +72,15 @@ public:
         upHeapify(vec.size() - 1);
     }
 
+    void addEfficient(int val)
+    {
+        vec.push_back(val);
+        for (int i = vec.size() / 2 - 1; i >= 0; i--)
+        {
+            downHeapify(i);
+        }
+    }
+
     int remove()
     {
         if (!size())
@@ -114,7 +123,8 @@ int main()
         if (str[0] == 'a')
         {
             string num = str.substr(4);
-            pq.add(stoi(num));
+            // pq.add(stoi(num));
+            pq.addEfficient(stoi(num));
         }
         else if (str[0] == 'r')
         {
