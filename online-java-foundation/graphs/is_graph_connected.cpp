@@ -1,9 +1,9 @@
-// LINK - https://www.pepcoding.com/resources/online-java-foundation/graphs/print-all-paths-official/ojquestion
+// LINK - https://www.pepcoding.com/resources/online-java-foundation/graphs/is-graph-connected-official/ojquestion
 
 // TC = O(V*E), SC = O(V)
+
 #include <iostream>
 #include <vector>
-#include <string>
 using namespace std;
 
 class Edge
@@ -21,31 +21,26 @@ public:
     }
 };
 
-void printAllPaths(vector<Edge> graph[], int src, int dest, vector<bool> visited, string path)
+void getCC(vector<Edge> graph[], int src, vector<bool> &visited, vector<int> &comp)
 {
-    if (src == dest)
-    {
-        cout << path << endl;
-        return;
-    }
     visited[src] = true;
+    comp.push_back(src);
     for (auto &&edge : graph[src])
     {
-        if (visited[edge.nbr] == false)
+        if (!visited[edge.nbr])
         {
-            printAllPaths(graph, edge.nbr, dest, visited, path + to_string(edge.nbr));
+            getCC(graph, edge.nbr, visited, comp);
         }
     }
-    visited[src] = false;
 }
 
 int main()
 {
-    int vertices, edges, src, dest;
-    cin >> vertices;
+    int vertices, edges;
+    cin >> vertices >> edges;
     vector<Edge> graph[vertices];
     vector<bool> visited(vertices, false);
-    cin >> edges;
+    vector<vector<int>> comps;
 
     for (int i = 0; i < edges; i++)
     {
@@ -55,7 +50,15 @@ int main()
         graph[v2].push_back(Edge(v2, v1, wt));
     }
 
-    cin >> src >> dest;
-    printAllPaths(graph, src, dest, visited, to_string(src));
+    for (int v = 0; v < vertices; v++)
+    {
+        if (!visited[v])
+        {
+            vector<int> comp;
+            getCC(graph, v, visited, comp);
+            comps.push_back(comp);
+        }
+    }
+    comps.size() == 1 ? cout << "true" : cout << "false";
     return 0;
 }
