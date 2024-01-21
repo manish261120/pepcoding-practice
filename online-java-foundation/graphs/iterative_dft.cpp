@@ -1,9 +1,9 @@
-// LINK - https://www.pepcoding.com/resources/online-java-foundation/graphs/bfs-graph-official/ojquestion
+// LINK - https://www.pepcoding.com/resources/online-java-foundation/graphs/iterative-dft-official/ojquestion
 
 // TC = O(V+E), SC = O(V)
 #include <iostream>
 #include <vector>
-#include <queue>
+#include <stack>
 using namespace std;
 
 class Edge
@@ -21,15 +21,15 @@ public:
     }
 };
 
-void bft(vector<Edge> graph[], int src, vector<bool> visited)
+void dft(vector<Edge> graph[], int src, vector<bool> visited)
 {
-    queue<pair<int, string>> q;
-    q.push({src, to_string(src)});
+    stack<pair<int, string>> st;
+    st.push({src, to_string(src)});
 
-    while (!q.empty())
+    while (!st.empty())
     {
-        pair<int, string> pair = q.front();
-        q.pop();
+        pair<int, string> pair = st.top();
+        st.pop();
         if (visited[pair.first])
         {
             continue;
@@ -41,7 +41,7 @@ void bft(vector<Edge> graph[], int src, vector<bool> visited)
         {
             if (!visited[edge.nbr])
             {
-                q.push({edge.nbr, pair.second + to_string(edge.nbr)});
+                st.push({edge.nbr, pair.second + to_string(edge.nbr)});
             }
         }
     }
@@ -63,6 +63,6 @@ int main()
     }
 
     cin >> src;
-    bft(graph, src, visited);
+    dft(graph, src, visited);
     return 0;
 }

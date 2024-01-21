@@ -1,9 +1,10 @@
-// LINK - https://www.pepcoding.com/resources/online-java-foundation/graphs/is-cyclic-official/ojquestion
+// LINK - https://www.pepcoding.com/resources/online-java-foundation/graphs/is-bipartite-official/ojquestion
 
 // TC = O(V+E), SC = O(V)
 #include <iostream>
 #include <vector>
 #include <queue>
+#include <unordered_set>
 using namespace std;
 
 class Edge
@@ -21,30 +22,33 @@ public:
     }
 };
 
-bool isCyclic(vector<Edge> graph[], int src, vector<bool> &visited)
+bool isCompBipartite(vector<Edge> graph[], int src, vector<int> &visited)
 {
-    queue<pair<int, string>> q;
-    q.push({src, to_string(src)});
+    queue<pair<int, int>> q;
+    q.push({src, 0});
 
     while (!q.empty())
     {
-        pair<int, string> pair = q.front();
+        pair<int, int> pair = q.front();
         q.pop();
-        if (visited[pair.first])
+        if (visited[pair.first] != -1)
         {
-            return true;
+            if (visited[pair.first] != pair.second)
+            {
+                return false;
+            }
         }
+        visited[pair.first] = pair.second;
 
-        visited[pair.first] = true;
         for (auto &&edge : graph[pair.first])
         {
-            if (!visited[edge.nbr])
+            if (visited[edge.nbr] == -1)
             {
-                q.push({edge.nbr, pair.second + to_string(edge.nbr)});
+                q.push({edge.nbr, pair.second + 1});
             }
         }
     }
-    return false;
+    return true;
 }
 
 int main()
@@ -52,7 +56,7 @@ int main()
     int vertices, edges, src;
     cin >> vertices >> edges;
     vector<Edge> graph[vertices];
-    vector<bool> visited(vertices, false);
+    vector<int> visited(vertices, -1);
 
     for (int i = 0; i < edges; i++)
     {
@@ -62,19 +66,21 @@ int main()
         graph[v2].push_back(Edge(v2, v1, wt));
     }
     cin >> src;
-    bool iscycle;
+    bool isbipartite = true;
 
     for (int v = 0; v < vertices; v++)
     {
-        if (!visited[v])
+        if (visited[v] == -1)
         {
-            if (isCyclic(graph, src, visited))
+            cout << "src " << v << endl;
+            if (!isCompBipartite(graph, v, visited))
             {
-                iscycle = true;
+
+                isbipartite = false;
                 break;
             }
         }
     }
-    iscycle ? cout << "true\n" : cout << "false\n";
+    isbipartite ? cout << "true\n" : cout << "false\n";
     return 0;
 }
