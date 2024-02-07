@@ -42,8 +42,6 @@ int main()
     int n;
     cin >> n;
     vector<bool> used(n + 1, false);
-    vector<int> a;
-    a.push_back(100);
     solution(1, n, used, "");
     return 0;
 }
